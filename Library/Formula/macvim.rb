@@ -66,6 +66,21 @@ class Macvim < Formula
         "$(OUTDIR)/MacVim-generic.icns: make_icons.py vim-noshadow-512.png loadfont.so"
     end
 
+    inreplace 'src/auto/config.mk' do |s|
+      s.change_make_var! 'CC', '/usr/bin/clang'
+      s.change_make_var! 'CPP', '/usr/bin/clang -E'
+      puts s.grep /CC/
+    end
+
+    ['src/MacVim/MacVim.xcodeproj/project.pbxproj',
+     'src/MacVim/PSMTabBarControl/PSMTabBarControl.xcodeproj/project.pbxproj'].each do |mk|
+      inreplace mk do |s|
+        puts s.grep /GCC_VERSION/
+        s.gsub!(/GCC_VERSION =.*/, 'GCC_VERSION = "";')
+        puts s.grep /GCC_VERSION/
+      end
+    end
+
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
