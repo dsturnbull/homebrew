@@ -52,10 +52,10 @@ end
 
 __END__
 diff --git a/src/log_text.c b/src/log_text.c
-index 7771bb0..7412016 100644
+index ce5a9b1..d2e054f 100644
 --- a/src/log_text.c
 +++ b/src/log_text.c
-@@ -557,7 +557,12 @@ void LogIpAddrs(TextLog *log, Packet *p)
+@@ -555,7 +555,12 @@ void LogIpAddrs(TextLog *log, Packet *p)
      }
      else
      {
