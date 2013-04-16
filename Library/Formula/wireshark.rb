@@ -135,4 +135,3 @@ index ccdd80e..4cd038f 100644
 +
        print_args.print_hex = verbose && print_hex;
        print_args.print_dissections = verbose ? print_dissections_expanded : print_dissections_none;
- 
