@@ -39,6 +39,8 @@ class Snort < Formula
     system "make install"
   end
 
+  def patches; DATA; end
+
   def caveats; <<-EOS.undent
     For snort to be functional, you need to update the permissions for /dev/bpf*
     so that they can be read by non-root users.  This can be done manually using:
@@ -47,3 +49,23 @@ class Snort < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/log_text.c b/src/log_text.c
+index 7771bb0..7412016 100644
+--- a/src/log_text.c
++++ b/src/log_text.c
+@@ -557,7 +557,12 @@ void LogIpAddrs(TextLog *log, Packet *p)
+     }
+     else
+     {
+-        char *ip_fmt = "%s:%d -> %s:%d";
++        char *ip_fmt;
++
++        if (IS_IP6(p))
++            ip_fmt = "[%s]:%d -> [%s]:%d";
++        else
++            ip_fmt = "%s:%d -> %s:%d";
+ 
+         if (ScObfuscate())
+         {
